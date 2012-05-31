@@ -16,4 +16,6 @@ Gem::Specification.new do |gem|
   gem.version       = OpenExchangeRates::VERSION
 
   gem.add_dependency('yajl-ruby')
+
+  gem.add_development_dependency('rr')
 end
