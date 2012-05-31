@@ -18,4 +18,5 @@ Gem::Specification.new do |gem|
   gem.add_dependency('yajl-ruby')
 
   gem.add_development_dependency('rr')
+  gem.add_development_dependency('rake')
 end
