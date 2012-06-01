@@ -121,6 +121,9 @@ class TestOpenExchangeRates < Test::Unit::TestCase
     fx.convert(123.45, :from => "EUR", :to => "USD", :on => "2012-04-10")
     fx.convert(12, :from => "USD", :to => "EUR")
     fx.convert(123.4567, :from => "EUR", :to => "USD", :on => "2012-05-10")
+    fx.exchange_rate("USD", "EUR")
+    fx.exchange_rate("USD", "EUR", "2012-04-10")
+    fx.exchange_rate("USD", "AUD", "2012-05-10")
   end
 
 end
