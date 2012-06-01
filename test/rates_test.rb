@@ -114,4 +114,13 @@ class TestOpenExchangeRates < Test::Unit::TestCase
     assert_equal 12.3457, fx.round(12.345678, 4)
   end
 
+  def test_multiple_calls
+    fx = OpenExchangeRates::Rates.new
+    fx.convert(123, :from => "EUR", :to => "AUD", :on => "2012-03-10")
+    fx.convert(100, :from => "USD", :to => "EUR")
+    fx.convert(123.45, :from => "EUR", :to => "USD", :on => "2012-04-10")
+    fx.convert(12, :from => "USD", :to => "EUR")
+    fx.convert(123.4567, :from => "EUR", :to => "USD", :on => "2012-05-10")
+  end
+
 end

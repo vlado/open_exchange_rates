@@ -53,16 +53,14 @@ module OpenExchangeRates
       (amount * 10**decimals).round.to_f / 10**decimals
     end
 
-    def parser
-      @parser ||= OpenExchangeRates::Parser.new
-    end
-
     def parse_latest
-      parser.parse(open(OpenExchangeRates::LATEST_URL))
+      @latets_parser ||= OpenExchangeRates::Parser.new
+      @latets_parser.parse(open(OpenExchangeRates::LATEST_URL))
     end
 
     def parse_on(date_string)
-      parser.parse(open("#{OpenExchangeRates::BASE_URL}/historical/#{date_string}.json"))
+      @on_parser = OpenExchangeRates::Parser.new
+      @on_parser.parse(open("#{OpenExchangeRates::BASE_URL}/historical/#{date_string}.json"))
     end
 
   end
