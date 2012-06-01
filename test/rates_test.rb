@@ -116,14 +116,16 @@ class TestOpenExchangeRates < Test::Unit::TestCase
 
   def test_multiple_calls
     fx = OpenExchangeRates::Rates.new
-    fx.convert(123, :from => "EUR", :to => "AUD", :on => "2012-03-10")
-    fx.convert(100, :from => "USD", :to => "EUR")
-    fx.convert(123.45, :from => "EUR", :to => "USD", :on => "2012-04-10")
-    fx.convert(12, :from => "USD", :to => "EUR")
-    fx.convert(123.4567, :from => "EUR", :to => "USD", :on => "2012-05-10")
-    fx.exchange_rate("USD", "EUR")
-    fx.exchange_rate("USD", "EUR", "2012-04-10")
-    fx.exchange_rate("USD", "AUD", "2012-05-10")
+    assert_nothing_raised do
+      fx.convert(123, :from => "EUR", :to => "AUD", :on => "2012-03-10")
+      fx.convert(100, :from => "USD", :to => "EUR")
+      fx.convert(123.45, :from => "EUR", :to => "USD", :on => "2012-04-10")
+      fx.convert(12, :from => "USD", :to => "EUR")
+      fx.convert(123.4567, :from => "EUR", :to => "USD", :on => "2012-05-10")
+      fx.exchange_rate("USD", "EUR")
+      fx.exchange_rate("USD", "EUR", "2012-04-10")
+      fx.exchange_rate("USD", "AUD", "2012-05-10")
+    end
   end
 
 end
