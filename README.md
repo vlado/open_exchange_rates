@@ -1,6 +1,10 @@
 # OpenExchangeRates
 
-Ruby gem for [Open Exchange Rates API](http://openexchangerates.org) - free / open source hourly-updated currency data for everybody
+Ruby gem for currency conversion based on [Open Exchange Rates API](http://openexchangerates.org) - free / open source hourly-updated currency data for everybody
+
+## Accuracy
+
+Please see [https://github.com/currencybot/open-exchange-rates/#accuracy](https://github.com/currencybot/open-exchange-rates/#accuracy) and/or [http://openexchangerates.org/documentation/#specification](http://openexchangerates.org/documentation/#specification)
 
 ## Installation
 
@@ -40,7 +44,7 @@ Get exchange rate on specific date
     
 ### Default currency
 
-If you omit :from or :to option conversion will be related to base currency. USD is set as base currency (plan is to add this as config option in the near future).
+If you omit **:from** or **:to** option conversion will be related to base currency. USD is set as base currency (plan is to add this as config option in the near future).
 
     fx.convert(123.45, :to => "EUR") # => 99.87 EUR
     fx.convert(123.45, :from => "EUR") # => 152.51 USD
@@ -63,3 +67,8 @@ If you omit :from or :to option conversion will be related to base currency. USD
 3. Commit your changes (`git commit -am 'Added some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
+## Licence and Terms
+
+Licence - [http://openexchangerates.org/license](http://openexchangerates.org/license)
+Terms - [http://openexchangerates.org/terms](http://openexchangerates.org/terms)
