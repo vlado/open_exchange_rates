@@ -8,18 +8,38 @@ class TestOpenExchangeRates < Test::Unit::TestCase
 
     # 1 USD = 6.0995 HRK
     # 1 USD = 1.026057 AUD
-    assert_equal 1, fx.exchange_rate("USD", "USD")
-    assert_equal 1, fx.exchange_rate("AUD", "AUD")
-    assert_equal 1, fx.exchange_rate("HRK", "HRK")
+    assert_equal 1, fx.exchange_rate(:from => "USD", :to => "USD")
+    assert_equal 1, fx.exchange_rate(:from => "AUD", :to => "AUD")
+    assert_equal 1, fx.exchange_rate(:from => "HRK", :to => "HRK")
 
-    assert_equal 6.0995, fx.exchange_rate("USD", "HRK")
-    assert_equal 1.026057, fx.exchange_rate("USD", "AUD")
+    assert_equal 6.0995, fx.exchange_rate(:from => "USD", :to => "HRK")
+    assert_equal 1.026057, fx.exchange_rate(:from => "USD", :to => "AUD")
 
-    assert_equal 0.163948, fx.exchange_rate("HRK", "USD")
-    assert_equal 0.974605, fx.exchange_rate("AUD", "USD")
+    assert_equal 0.163948, fx.exchange_rate(:from => "HRK", :to => "USD")
+    assert_equal 0.974605, fx.exchange_rate(:from => "AUD", :to => "USD")
 
-    assert_equal 5.944602, fx.exchange_rate("AUD", "HRK")
-    assert_equal 0.168220, fx.exchange_rate("HRK", "AUD")
+    assert_equal 5.944602, fx.exchange_rate(:from => "AUD", :to => "HRK")
+    assert_equal 0.168220, fx.exchange_rate(:from => "HRK", :to => "AUD")
+  end
+
+  def test_exchange_rate_on_specific_date
+    fx = OpenExchangeRates::Rates.new
+    stub(fx).parse_on { OpenExchangeRates::Parser.new.parse(File.open("2012-05-10.json")) }
+
+    # 1 USD = 5.80025 HRK
+    # 1 USD = 0.99458 AUD
+    assert_equal 1, fx.exchange_rate(:from => "USD", :to => "USD", :on => "2012-05-10")
+    assert_equal 1, fx.exchange_rate(:from => "AUD", :to => "AUD", :on => "2012-05-10")
+    assert_equal 1, fx.exchange_rate(:from => "HRK", :to => "HRK", :on => "2012-05-10")
+
+    assert_equal 5.80025, fx.exchange_rate(:from => "USD", :to => "HRK", :on => "2012-05-10")
+    assert_equal 0.99458, fx.exchange_rate(:from => "USD", :to => "AUD", :on => "2012-05-10")
+
+    assert_equal 0.172406, fx.exchange_rate(:from => "HRK", :to => "USD", :on => "2012-05-10")
+    assert_equal 1.005450, fx.exchange_rate(:from => "AUD", :to => "USD", :on => "2012-05-10")
+
+    assert_equal 5.831859, fx.exchange_rate(:from => "AUD", :to => "HRK", :on => "2012-05-10")
+    assert_equal 0.171472, fx.exchange_rate(:from => "HRK", :to => "AUD", :on => "2012-05-10")
   end
 
   def test_convert
@@ -122,9 +142,9 @@ class TestOpenExchangeRates < Test::Unit::TestCase
       fx.convert(123.45, :from => "EUR", :to => "USD", :on => "2012-04-10")
       fx.convert(12, :from => "USD", :to => "EUR")
       fx.convert(123.4567, :from => "EUR", :to => "USD", :on => "2012-05-10")
-      fx.exchange_rate("USD", "EUR")
-      fx.exchange_rate("USD", "EUR", "2012-04-10")
-      fx.exchange_rate("USD", "AUD", "2012-05-10")
+      fx.exchange_rate(:from => "USD", :to => "EUR")
+      fx.exchange_rate(:from => "USD", :to => "EUR", :on => "2012-04-10")
+      fx.exchange_rate(:from => "USD", :to => "AUD", :on => "2012-05-10")
     end
   end
 

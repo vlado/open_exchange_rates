@@ -5,21 +5,24 @@ module OpenExchangeRates
 
     class MissingFromOptionError < StandardError; end;
 
-    def exchange_rate(from, to, on = nil)
-      from = from.to_s.upcase
-      to = to.to_s.upcase
+    def exchange_rate(options = {})
+      from_curr = options[:from].to_s.upcase
+      to_curr = options[:to].to_s.upcase
 
-      response = on ? on(on) : latest
+      response = options[:on] ? on(options[:on]) : latest
       rates = response.rates
 
-      if from == to
+      from_curr = response.base_currency if from_curr.empty?
+      to_curr = response.base_currency if to_curr.empty?
+
+      if from_curr == to_curr
         rate = 1
-      elsif from == response.base_currency
-        rate = rates[to]
-      elsif to == response.base_currency
-        rate = 1 / rates[from]
+      elsif from_curr == response.base_currency
+        rate = rates[to_curr]
+      elsif to_curr == response.base_currency
+        rate = 1 / rates[from_curr]
       else
-        rate = rates[to] * (1 / rates[from])
+        rate = rates[to_curr] * (1 / rates[from_curr])
       end
       round(rate, 6)
     end

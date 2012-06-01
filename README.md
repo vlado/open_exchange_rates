@@ -32,11 +32,11 @@ Convert between currencies on specific date
     
 Get current exchange rate
 
-    fx.exchange_rate("USD", "EUR") # => 0.808996
+    fx.exchange_rate(:from => "USD", :to => "EUR") # => 0.808996
     
 Get exchange rate on specific date
 
-    fx.exchange_rate("USD", "EUR", "2012-05-10") # => 0.773329
+    fx.exchange_rate(:from => "USD", :to => "EUR", :on => "2012-05-10") # => 0.773329
 
     
 ## TODO
