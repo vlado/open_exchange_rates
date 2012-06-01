@@ -6,7 +6,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["vladocingel@gmail.com"]
   gem.description   = %q{Ruby library for Open Exchange Rates API - free / open source hourly-updated currency data for everybody}
   gem.summary       = %q{Ruby library for Open Exchange Rates API}
-  gem.homepage      = ""
+  gem.homepage      = "https://github.com/vlado/open_exchange_rates"
 
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
