@@ -70,19 +70,24 @@ class TestOpenExchangeRates < Test::Unit::TestCase
 
   def test_convert_if_from_option_is_missing
     fx = OpenExchangeRates::Rates.new
+    stub(fx).parse_latest { OpenExchangeRates::Parser.new.parse(File.open("latest.json")) }
 
-    assert_raise OpenExchangeRates::Rates::MissingFromOptionError do
-      fx.convert(100, :to => "HRK")
-    end
+    # from defaults to base currency (USD)
+    # 1 USD = 6.0995 HRK
+    # 1 USD = 1.026057 AUD
+    assert_equal 609.95, fx.convert(100, :to => "HRK")
+    assert_equal 102.61, fx.convert(100, :to => "AUD")
   end
 
   def test_convert_if_to_option_is_missing
     fx = OpenExchangeRates::Rates.new
     stub(fx).parse_latest { OpenExchangeRates::Parser.new.parse(File.open("latest.json")) }
 
-    # Defaults to base currency (USD)
+    # to defaults to base currency (USD)
     # 1 USD = 6.0995 HRK
+    # 1 USD = 1.026057 AUD
     assert_equal 16.39, fx.convert(100, :from => "HRK")
+    assert_equal 97.46, fx.convert(100, :from => "AUD")
   end
 
   def test_latest

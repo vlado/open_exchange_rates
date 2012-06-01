@@ -37,10 +37,21 @@ Get current exchange rate
 Get exchange rate on specific date
 
     fx.exchange_rate(:from => "USD", :to => "EUR", :on => "2012-05-10") # => 0.773329
+    
+### Default currency
+
+If you omit :from or :to option conversion will be related to base currency. USD is set as base currency (plan is to add this as config option in the near future).
+
+    fx.convert(123.45, :to => "EUR") # => 99.87 EUR
+    fx.convert(123.45, :from => "EUR") # => 152.51 USD
+
+    fx.exchange_rate(:to => "EUR") # => 0.808996
+    fx.exchange_rate(:from => "EUR") # => 1.235414
 
     
 ## TODO
 
+- ability to set default currency (USD is currently always set as base currency)
 - ability to pass Date as :on option (only 'yyyy-mm-dd' works currently)
 - write some docs
 - write more test for specific situations (invalid date, ...)

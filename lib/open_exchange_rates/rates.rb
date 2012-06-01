@@ -3,8 +3,6 @@ require "open-uri"
 module OpenExchangeRates
   class Rates
 
-    class MissingFromOptionError < StandardError; end;
-
     def exchange_rate(options = {})
       from_curr = options[:from].to_s.upcase
       to_curr = options[:to].to_s.upcase
@@ -28,19 +26,7 @@ module OpenExchangeRates
     end
 
     def convert(amount, options = {})
-      from_curr = options[:from].to_s.upcase
-      raise MissingFromOptionError if from_curr.empty?
-
-      response = options[:on] ? on(options[:on]) : latest
-      rates = response.rates
-
-      to_curr = options[:to].to_s.upcase
-      to_curr = response.base_currency if to_curr.empty?
-
-      from_rate = rates[from_curr].to_f
-      to_rate = rates[to_curr].to_f
-
-      round( amount * ( to_rate * (1 / from_rate) ) )
+      round(amount*exchange_rate(options))
     end
 
     def latest(reload = false)
