@@ -36,7 +36,7 @@ Get current exchange rate
     
 Get exchange rate on specific date
 
-    fx.exchange_rate("USD", "EUR", "2012-05-10") # => 0.808996
+    fx.exchange_rate("USD", "EUR", "2012-05-10") # => 0.773329
 
     
 ## TODO
