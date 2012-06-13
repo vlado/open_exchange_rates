@@ -4,7 +4,7 @@ class TestOpenExchangeRates < Test::Unit::TestCase
 
   def test_exchange_rate
     fx = OpenExchangeRates::Rates.new
-    stub(fx).parse_latest { OpenExchangeRates::Parser.new.parse(File.open("latest.json")) }
+    stub(fx).parse_latest { OpenExchangeRates::Parser.new.parse(open_asset("latest.json")) }
 
     # 1 USD = 6.0995 HRK
     # 1 USD = 1.026057 AUD
@@ -24,7 +24,7 @@ class TestOpenExchangeRates < Test::Unit::TestCase
 
   def test_exchange_rate_on_specific_date
     fx = OpenExchangeRates::Rates.new
-    stub(fx).parse_on { OpenExchangeRates::Parser.new.parse(File.open("2012-05-10.json")) }
+    stub(fx).parse_on { OpenExchangeRates::Parser.new.parse(open_asset("2012-05-10.json")) }
 
     # 1 USD = 5.80025 HRK
     # 1 USD = 0.99458 AUD
@@ -44,7 +44,7 @@ class TestOpenExchangeRates < Test::Unit::TestCase
 
   def test_convert
     fx = OpenExchangeRates::Rates.new
-    stub(fx).parse_latest { OpenExchangeRates::Parser.new.parse(File.open("latest.json")) }
+    stub(fx).parse_latest { OpenExchangeRates::Parser.new.parse(open_asset("latest.json")) }
 
     # 1 USD = 6.0995 HRK
     # 1 USD = 1.026057 AUD
@@ -57,7 +57,7 @@ class TestOpenExchangeRates < Test::Unit::TestCase
 
   def test_convert_on_specific_date
     fx = OpenExchangeRates::Rates.new
-    stub(fx).parse_on { OpenExchangeRates::Parser.new.parse(File.open("2012-05-10.json")) }
+    stub(fx).parse_on { OpenExchangeRates::Parser.new.parse(open_asset("2012-05-10.json")) }
 
     # 1 USD = 5.80025 HRK
     # 1 USD = 0.99458 AUD
@@ -70,7 +70,7 @@ class TestOpenExchangeRates < Test::Unit::TestCase
 
   def test_convert_if_from_option_is_missing
     fx = OpenExchangeRates::Rates.new
-    stub(fx).parse_latest { OpenExchangeRates::Parser.new.parse(File.open("latest.json")) }
+    stub(fx).parse_latest { OpenExchangeRates::Parser.new.parse(open_asset("latest.json")) }
 
     # from defaults to base currency (USD)
     # 1 USD = 6.0995 HRK
@@ -81,7 +81,7 @@ class TestOpenExchangeRates < Test::Unit::TestCase
 
   def test_convert_if_to_option_is_missing
     fx = OpenExchangeRates::Rates.new
-    stub(fx).parse_latest { OpenExchangeRates::Parser.new.parse(File.open("latest.json")) }
+    stub(fx).parse_latest { OpenExchangeRates::Parser.new.parse(open_asset("latest.json")) }
 
     # to defaults to base currency (USD)
     # 1 USD = 6.0995 HRK
@@ -98,7 +98,7 @@ class TestOpenExchangeRates < Test::Unit::TestCase
     assert_equal "USD", latest_rates.base
     assert latest_rates.rates.is_a?(Hash)
 
-    stub(fx).parse_latest { OpenExchangeRates::Parser.new.parse(File.open("latest.json")) }
+    stub(fx).parse_latest { OpenExchangeRates::Parser.new.parse(open_asset("latest.json")) }
 
     # latest results are cached
     cached_rates = fx.latest
@@ -151,6 +151,16 @@ class TestOpenExchangeRates < Test::Unit::TestCase
       fx.exchange_rate(:from => "USD", :to => "EUR", :on => "2012-04-10")
       fx.exchange_rate(:from => "USD", :to => "AUD", :on => "2012-05-10")
     end
+  end
+
+private
+
+  def assets_root
+    File.join(File.dirname(__FILE__), "assets")
+  end
+
+  def open_asset(filename)
+    File.open("#{assets_root}/#{filename}")
   end
 
 end
