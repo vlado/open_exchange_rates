@@ -43,8 +43,8 @@ module OpenExchangeRates
     end
 
     def parse_latest
-      @latets_parser ||= OpenExchangeRates::Parser.new
-      @latets_parser.parse(open(OpenExchangeRates::LATEST_URL))
+      @latest_parser ||= OpenExchangeRates::Parser.new
+      @latest_parser.parse(open(OpenExchangeRates::LATEST_URL))
     end
 
     def parse_on(date_string)
