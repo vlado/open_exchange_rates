@@ -119,11 +119,11 @@ class TestOpenExchangeRates < Test::Unit::TestCase
 
   def test_on
     fx = OpenExchangeRates::Rates.new
+    stub(fx).parse_on { OpenExchangeRates::Parser.new.parse(open_asset("2012-05-10.json")) }
     on_rates = fx.on("2012-05-10")
 
     assert_equal "USD", on_rates.base_currency
     assert_equal "USD", on_rates.base
-    assert on_rates.rates.is_a?(Hash)
 
     assert_equal 1, on_rates.rates["USD"]
     assert_equal 0.99458, on_rates.rates["AUD"]
