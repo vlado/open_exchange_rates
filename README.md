@@ -21,6 +21,31 @@ And then execute:
 Or install it yourself as:
 
     $ gem install open_exchange_rates
+    
+## Configuration
+
+You will need App ID to use OpenExchangeRates, you can get one for free [here](https://openexchangerates.org/signup/). Wanna know [why App ID is needed](http://www.josscrowcroft.com/2012/projects/open-exchange-rates-update-the-partys-not-over-it-just-got-a-little-too-noisy/).
+
+**Option 1**
+
+Set OPEN_EXCHANGE_RATES_APP_ID environment variable and it will be used automatically. If you are using [foreman](http://ddollar.github.com/foreman/) for example just add it to your .env file like this
+
+	OPEN_EXCHANGE_RATES_APP_ID=YourAppID
+
+**Option 2**
+
+	OpenExchangeRates.configure do |config|
+  	  config.app_id = "YourAppID"
+	end
+	
+If you are using Rails good place to add this is config/initializers/open_exchange_rates.rb
+	
+**Option 3**
+
+Pass it on initialization
+	
+	fx = OpenExchangeRates::Rates.new(:app_id => "YourAppID")
+	
 
 ## Usage
 
