@@ -3,6 +3,17 @@ require "open-uri"
 module OpenExchangeRates
   class Rates
 
+    class MissingAppIdError < StandardError
+      def initialize(msg = "Go to https://openexchangerates.org/signup to get App ID and then add it to the configuration: OpenExchangeRates.configuration.app_id = 'your app id'")
+        super(msg)
+      end
+    end
+
+    def initialize(app_id = nil)
+      @app_id = app_id || OpenExchangeRates.configuration.app_id
+      raise MissingAppIdError unless @app_id
+    end
+
     def exchange_rate(options = {})
       from_curr = options[:from].to_s.upcase
       to_curr = options[:to].to_s.upcase
@@ -44,12 +55,12 @@ module OpenExchangeRates
 
     def parse_latest
       @latest_parser ||= OpenExchangeRates::Parser.new
-      @latest_parser.parse(open(OpenExchangeRates::LATEST_URL))
+      @latest_parser.parse(open("#{OpenExchangeRates::LATEST_URL}?app_id=#{@app_id}"))
     end
 
     def parse_on(date_string)
       @on_parser = OpenExchangeRates::Parser.new
-      @on_parser.parse(open("#{OpenExchangeRates::BASE_URL}/historical/#{date_string}.json"))
+      @on_parser.parse(open("#{OpenExchangeRates::BASE_URL}/historical/#{date_string}.json?app_id=#{@app_id}"))
     end
 
   end

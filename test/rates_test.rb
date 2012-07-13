@@ -2,6 +2,26 @@ require "test_helper"
 
 class TestOpenExchangeRates < Test::Unit::TestCase
 
+  def test_app_id_is_required
+    assert_nothing_raised { OpenExchangeRates::Rates.new }
+
+    stub(OpenExchangeRates.configuration).app_id { nil }
+    assert_raise(OpenExchangeRates::Rates::MissingAppIdError) { OpenExchangeRates::Rates.new }
+
+    assert_nothing_raised { OpenExchangeRates::Rates.new(:app_id => "myappid") }
+
+    OpenExchangeRates.configuration.app_id = ENV['OPEN_EXCHANGE_RATES_APP_ID']
+  end
+
+  def test_invalid_app_id_raise_error
+    stub(OpenExchangeRates.configuration).app_id { "somethingstupid" }
+    fx = OpenExchangeRates::Rates.new
+
+    assert_raise NoMethodError do
+      fx.exchange_rate(:from => "USD", :to => "EUR")
+    end
+  end
+
   def test_exchange_rate
     fx = OpenExchangeRates::Rates.new
     stub(fx).parse_latest { OpenExchangeRates::Parser.new.parse(open_asset("latest.json")) }
@@ -119,15 +139,14 @@ class TestOpenExchangeRates < Test::Unit::TestCase
 
   def test_on
     fx = OpenExchangeRates::Rates.new
-    stub(fx).parse_on { OpenExchangeRates::Parser.new.parse(open_asset("2012-05-10.json")) }
     on_rates = fx.on("2012-05-10")
 
     assert_equal "USD", on_rates.base_currency
     assert_equal "USD", on_rates.base
 
     assert_equal 1, on_rates.rates["USD"]
-    assert_equal 0.99458, on_rates.rates["AUD"]
-    assert_equal 5.80025, on_rates.rates["HRK"]
+    assert_equal 0.991118, on_rates.rates["AUD"]
+    assert_equal 5.795542, on_rates.rates["HRK"]
   end
 
   def test_round
@@ -141,6 +160,7 @@ class TestOpenExchangeRates < Test::Unit::TestCase
 
   def test_multiple_calls
     fx = OpenExchangeRates::Rates.new
+
     assert_nothing_raised do
       fx.convert(123, :from => "EUR", :to => "AUD", :on => "2012-03-10")
       fx.convert(100, :from => "USD", :to => "EUR")
