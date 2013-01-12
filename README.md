@@ -1,6 +1,7 @@
 # OpenExchangeRates
 
 [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/vlado/open_exchange_rates)
+[![Gem Version](https://badge.fury.io/rb/open_exchange_rates.png)](http://badge.fury.io/rb/open_exchange_rates)
 
 Ruby gem for currency conversion based on [Open Exchange Rates API](http://openexchangerates.org) - free / open source hourly-updated currency data for everybody
 
