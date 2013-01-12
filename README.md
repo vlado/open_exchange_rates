@@ -84,9 +84,9 @@ If you omit **:from** or **:to** option conversion will be related to base curre
 ## TODO
 
 - ability to set default currency (USD is currently always set as base currency)
-- ability to pass Date as :on option (only 'yyyy-mm-dd' works currently)
+- <del>ability to pass Date as :on option (only 'yyyy-mm-dd' works currently)</del>
 - write some docs
-- write more test for specific situations (invalid date, ...)
+- write more test for specific situations (<del>invalid date</del>, ...)
 
 ## Contributing
 
