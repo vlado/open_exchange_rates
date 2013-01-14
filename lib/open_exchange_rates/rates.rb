@@ -1,4 +1,5 @@
 require "open-uri"
+require "date"
 
 module OpenExchangeRates
   class Rates
@@ -9,8 +10,8 @@ module OpenExchangeRates
       end
     end
 
-    def initialize(app_id = nil)
-      @app_id = app_id || OpenExchangeRates.configuration.app_id
+    def initialize(options = {})
+      @app_id = options[:app_id] || OpenExchangeRates.configuration.app_id
       raise MissingAppIdError unless @app_id
     end
 
@@ -44,8 +45,25 @@ module OpenExchangeRates
       @latest_response = reload ? parse_latest : (@latest_response ||= parse_latest)
       OpenExchangeRates::Response.new(@latest_response)
     end
+    
+    def valid_yyyy_mm_dd(date_string)
+      matches = date_string =~ /^([0-9]{4})(?:(1[0-2]|0[1-9])|-(1[0-2]|0[1-9])-)(3[0-1]|0[1-9]|[1-2][0-9])/
+      raise ArgumentError, 'Not a valid date string (ie. yyyy-mm-dd)' unless matches
+      date_string
+    end
+    
+    def date_string_from(date_representation)
+      if date_representation.kind_of? Date
+        date_representation.to_s
+      elsif date_representation.kind_of? String
+        valid_yyyy_mm_dd date_representation
+      else
+        raise ArgumentError, "'on' must be a Date or 'yyyy-mm-dd' string"
+      end
+    end
 
-    def on(date_string)
+    def on(date_representation)
+      date_string = date_string_from(date_representation)
       OpenExchangeRates::Response.new(parse_on(date_string))
     end
 
