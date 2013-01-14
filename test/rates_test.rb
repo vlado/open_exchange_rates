@@ -14,6 +14,22 @@ class TestOpenExchangeRates < Test::Unit::TestCase
     OpenExchangeRates.configuration.app_id = ENV['OPEN_EXCHANGE_RATES_APP_ID']
   end
 
+  def test_app_id_configuration
+    fx = OpenExchangeRates::Rates.new
+    assert_equal ENV['OPEN_EXCHANGE_RATES_APP_ID'], fx.app_id
+
+    OpenExchangeRates.configure do |config|
+      config.app_id = "myappid"
+    end
+    fx = OpenExchangeRates::Rates.new
+    assert_equal "myappid", fx.app_id
+
+    fx = OpenExchangeRates::Rates.new(:app_id => 'myotherappid')
+    assert_equal "myotherappid", fx.app_id
+
+    OpenExchangeRates.configuration.app_id = ENV['OPEN_EXCHANGE_RATES_APP_ID']
+  end
+
   def test_invalid_app_id_raise_error
     stub(OpenExchangeRates.configuration).app_id { "somethingstupid" }
     fx = OpenExchangeRates::Rates.new

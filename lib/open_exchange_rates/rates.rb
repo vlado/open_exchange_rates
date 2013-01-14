@@ -10,8 +10,15 @@ module OpenExchangeRates
       end
     end
 
+    attr_reader :app_id
+
     def initialize(options = {})
-      @app_id = options[:app_id] || OpenExchangeRates.configuration.app_id
+      if options.kind_of? Hash
+        @app_id = options[:app_id] || OpenExchangeRates.configuration.app_id
+      else
+        warn "[DEPRECATION] `OpenExchangeRates::Rates.new('myappid')` is deprecated.  Please use `OpenExchangeRates::Rates.new(:app_id => 'myappid')` instead."
+        @app_id = options
+      end
       raise MissingAppIdError unless @app_id
     end
 
@@ -45,13 +52,13 @@ module OpenExchangeRates
       @latest_response = reload ? parse_latest : (@latest_response ||= parse_latest)
       OpenExchangeRates::Response.new(@latest_response)
     end
-    
+
     def valid_yyyy_mm_dd(date_string)
       matches = date_string =~ /^([0-9]{4})(?:(1[0-2]|0[1-9])|-(1[0-2]|0[1-9])-)(3[0-1]|0[1-9]|[1-2][0-9])/
       raise ArgumentError, 'Not a valid date string (ie. yyyy-mm-dd)' unless matches
       date_string
     end
-    
+
     def date_string_from(date_representation)
       if date_representation.kind_of? Date
         date_representation.to_s
