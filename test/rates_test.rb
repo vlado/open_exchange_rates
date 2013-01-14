@@ -1,4 +1,5 @@
 require "test_helper"
+require 'complex'
 
 class TestOpenExchangeRates < Test::Unit::TestCase
 
@@ -61,21 +62,21 @@ class TestOpenExchangeRates < Test::Unit::TestCase
     assert_equal 5.831859, fx.exchange_rate(:from => "AUD", :to => "HRK", :on => "2012-05-10")
     assert_equal 0.171472, fx.exchange_rate(:from => "HRK", :to => "AUD", :on => "2012-05-10")
   end
-  
+
   def test_exchange_rate_on_specific_date_specified_by_date_class
     fx = OpenExchangeRates::Rates.new
     stub(fx).parse_on { OpenExchangeRates::Parser.new.parse(open_asset("2012-05-10.json")) }
-    
+
     assert_equal 1, fx.exchange_rate(:from => "USD", :to => "USD", :on => Date.new(2012,05,10))
   end
-  
+
   def test_exchange_requires_valid_date
     fx = OpenExchangeRates::Rates.new
 
     assert_raise ArgumentError do
       fx.exchange_rate(:from => "USD", :to => "USD", :on => "somethingstupid")
     end
-    
+
     assert_raise ArgumentError do
       fx.exchange_rate(:from => "USD", :to => "USD", :on => Complex(0.3))
     end
