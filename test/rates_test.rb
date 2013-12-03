@@ -181,8 +181,8 @@ class TestOpenExchangeRates < Test::Unit::TestCase
     assert_equal "USD", on_rates.base
 
     assert_equal 1, on_rates.rates["USD"]
-    assert_equal 0.991118, on_rates.rates["AUD"]
-    assert_equal 5.795542, on_rates.rates["HRK"]
+    assert_equal 0.989596, on_rates.rates["AUD"]
+    assert_equal 5.793188, on_rates.rates["HRK"]
   end
 
   def test_round

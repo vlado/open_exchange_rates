@@ -10,5 +10,4 @@ Dotenv.load
 OpenExchangeRates.configuration.app_id = ENV['OPEN_EXCHANGE_RATES_APP_ID']
 
 class Test::Unit::TestCase
-  include RR::Adapters::TestUnit
 end
