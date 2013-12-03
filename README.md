@@ -98,5 +98,6 @@ If you omit **:from** or **:to** option conversion will be related to base curre
 
 ## Licence and Terms
 
-Licence - [http://openexchangerates.org/license](http://openexchangerates.org/license)
-Terms - [http://openexchangerates.org/terms](http://openexchangerates.org/terms)
+This project rocks and uses MIT-LICENSE.
+
+Please check Open Exchange Rates API [license](http://openexchangerates.org/license) and [terms](http://openexchangerates.org/terms) also.
