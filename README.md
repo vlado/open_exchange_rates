@@ -7,7 +7,7 @@ Ruby gem for currency conversion based on [Open Exchange Rates API](http://opene
 
 ## Accuracy
 
-Please see [https://github.com/currencybot/open-exchange-rates/#accuracy](https://github.com/currencybot/open-exchange-rates/#accuracy) and/or [http://openexchangerates.org/documentation/#specification](http://openexchangerates.org/documentation/#specification)
+Please see [https://github.com/josscrowcroft/open-exchange-rates#accuracy](https://github.com/josscrowcroft/open-exchange-rates#accuracy)
 
 ## Installation
 
@@ -25,7 +25,7 @@ Or install it yourself as:
     
 ## Configuration
 
-You will need App ID to use OpenExchangeRates, you can get one for free [here](https://openexchangerates.org/signup/). Wanna know [why App ID is needed](http://www.josscrowcroft.com/2012/projects/open-exchange-rates-update-the-partys-not-over-it-just-got-a-little-too-noisy/).
+You will need App ID to use OpenExchangeRates, you can get one [here](https://openexchangerates.org/signup/) for [free](https://openexchangerates.org/signup/free). Wanna know [why App ID is needed](http://www.josscrowcroft.com/2012/projects/open-exchange-rates-update-the-partys-not-over-it-just-got-a-little-too-noisy/).
 
 **Option 1**
 
