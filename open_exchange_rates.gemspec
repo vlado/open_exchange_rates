@@ -14,6 +14,7 @@ Gem::Specification.new do |gem|
   gem.name          = "open_exchange_rates"
   gem.require_paths = ["lib"]
   gem.version       = OpenExchangeRates::VERSION
+  gem.license       = "MIT"
 
   gem.add_dependency('yajl-ruby')
 
