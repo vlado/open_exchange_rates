@@ -1,6 +1,6 @@
 # OpenExchangeRates
 
-[![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/vlado/open_exchange_rates)
+[![Code Climate](https://codeclimate.com/github/vlado/open_exchange_rates.png)](https://codeclimate.com/github/vlado/open_exchange_rates)
 [![Gem Version](https://badge.fury.io/rb/open_exchange_rates.png)](http://badge.fury.io/rb/open_exchange_rates)
 
 Ruby gem for currency conversion based on [Open Exchange Rates API](http://openexchangerates.org) - free / open source hourly-updated currency data for everybody
@@ -95,6 +95,13 @@ If you omit **:from** or **:to** option conversion will be related to base curre
 3. Commit your changes (`git commit -am 'Added some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
+## Running tests
+
+1. Copy env.example to .env `cp env.example .env`
+2. Open `.env` and enter your API ID
+3. Run `rake`
+
 
 ## Licence and Terms
 
