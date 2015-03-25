@@ -206,7 +206,21 @@ class TestOpenExchangeRates < Test::Unit::TestCase
       fx.exchange_rate(:from => "USD", :to => "EUR")
       fx.exchange_rate(:from => "USD", :to => "EUR", :on => "2012-04-10")
       fx.exchange_rate(:from => "USD", :to => "AUD", :on => "2012-05-10")
+
     end
+  end
+
+  def test_error_conditions
+    fx = OpenExchangeRates::Rates.new
+
+    assert_raise(OpenExchangeRates::Rates::RateNotFoundError) do
+      fx.exchange_rate(:from => "???", :to => "AUD", :on => "2012-05-10")
+    end
+
+    assert_raise(OpenExchangeRates::Rates::RateNotFoundError) do
+      fx.exchange_rate(:from => "USD", :to => "???", :on => "2012-05-10")
+    end
+
   end
 
 private

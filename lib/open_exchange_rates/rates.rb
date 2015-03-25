@@ -10,6 +10,13 @@ module OpenExchangeRates
       end
     end
 
+    class RateNotFoundError < StandardError
+      def initialize(from_curr, to_curr)
+        msg = "Rate not found for #{from_curr} => #{to_curr}"
+        super(msg)
+      end
+    end
+
     attr_reader :app_id
 
     def initialize(options = {})
@@ -31,6 +38,10 @@ module OpenExchangeRates
 
       from_curr = response.base_currency if from_curr.empty?
       to_curr = response.base_currency if to_curr.empty?
+
+      unless rates[from_curr] && rates[to_curr]
+        raise RateNotFoundError.new(from_curr, to_curr)
+      end
 
       if from_curr == to_curr
         rate = 1
