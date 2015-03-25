@@ -209,7 +209,7 @@ class TestOpenExchangeRates < Test::Unit::TestCase
     end
   end
 
-  def test_error_conditions
+  def test_invalid_currency_code_fails_with_rate_not_found_error
     fx = OpenExchangeRates::Rates.new
 
     assert_raise(OpenExchangeRates::Rates::RateNotFoundError) do
