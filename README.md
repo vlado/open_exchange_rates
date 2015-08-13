@@ -25,7 +25,7 @@ Or install it yourself as:
     
 ## Configuration
 
-You will need App ID to use OpenExchangeRates, you can get one [here](https://openexchangerates.org/signup/) for [free](https://openexchangerates.org/signup/free). Wanna know [why App ID is needed](http://www.josscrowcroft.com/2012/projects/open-exchange-rates-update-the-partys-not-over-it-just-got-a-little-too-noisy/).
+You will need App ID to use OpenExchangeRates, you can get one [here](https://openexchangerates.org/signup/) for [free](https://openexchangerates.org/signup/free).
 
 **Option 1**
 
