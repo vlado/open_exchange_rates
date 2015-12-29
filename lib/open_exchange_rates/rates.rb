@@ -10,6 +10,12 @@ module OpenExchangeRates
       end
     end
 
+    class MissingCacheError < StandardError
+      def initialize(name, msg = "Missing cache adapter")
+        super("#{msg} #{name}")
+      end
+    end
+
     class RateNotFoundError < StandardError
       def initialize(from_curr, to_curr)
         msg = "Rate not found for #{from_curr} => #{to_curr}"
@@ -18,10 +24,19 @@ module OpenExchangeRates
     end
 
     attr_reader :app_id
+    attr_accessor :cache
 
     def initialize(options = {})
       if options.kind_of? Hash
         @app_id = options[:app_id] || OpenExchangeRates.configuration.app_id
+        begin
+          cache_options = options[:cache] || OpenExchangeRates.configuration.cache.to_hash
+          klass_name = "OpenExchangeRates::Cache::#{cache_options.delete(:type).to_s.capitalize}Cache"
+          cache_klass = Kernel.const_get(klass_name)
+          @cache = cache_klass.new(cache_options)
+        rescue NameError => error
+          raise MissingCacheError.new(error.name)
+        end
       else
         warn "[DEPRECATION] `OpenExchangeRates::Rates.new('myappid')` is deprecated.  Please use `OpenExchangeRates::Rates.new(:app_id => 'myappid')` instead."
         @app_id = options
@@ -96,8 +111,13 @@ module OpenExchangeRates
 
     def parse_on(date_string)
       @on_parser = OpenExchangeRates::Parser.new
-      @on_parser.parse(open("#{OpenExchangeRates::BASE_URL}/historical/#{date_string}.json?app_id=#{@app_id}"))
+      key = cache.key(on: date_string)
+      unless data = cache.get(key)
+        url = "#{OpenExchangeRates::BASE_URL}/historical/#{date_string}.json?app_id=#{@app_id}"
+        data = open(url) { |io| io.read }
+        cache.set(key, data)
+      end
+      @on_parser.parse(data)
     end
-
   end
 end
