@@ -241,3 +241,7 @@ Lint/LiteralInCondition:
 Lint/LiteralInInterpolation:
   Description: Checks for literals used in interpolation.
   Enabled: false
+
+# Custom configuration
+Style/HashSyntax:
+  EnforcedStyle: hash_rockets
