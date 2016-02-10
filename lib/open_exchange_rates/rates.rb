@@ -44,13 +44,13 @@ module OpenExchangeRates
       end
 
       if from_curr == to_curr
-        rate = 1
+        rate = 1.0
       elsif from_curr == response.base_currency
         rate = rates[to_curr]
       elsif to_curr == response.base_currency
-        rate = 1 / rates[from_curr]
+        rate = 1.0 / rates[from_curr]
       else
-        rate = rates[to_curr] * (1 / rates[from_curr])
+        rate = rates[to_curr] * (1.0 / rates[from_curr])
       end
       round(rate, 6)
     end

@@ -57,6 +57,9 @@ class TestOpenExchangeRates < Test::Unit::TestCase
 
     assert_equal 5.944602, fx.exchange_rate(:from => "AUD", :to => "HRK")
     assert_equal 0.168220, fx.exchange_rate(:from => "HRK", :to => "AUD")
+
+    assert_equal 0.00023, fx.exchange_rate(:from => 'SLL', to: 'USD')
+    assert_equal 4350, fx.exchange_rate(:from => 'USD', to: 'SLL')
   end
 
   def test_exchange_rate_on_specific_date
