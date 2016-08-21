@@ -1,6 +1,7 @@
 require "rubygems"
 require "open_exchange_rates/version"
 require "open_exchange_rates/configuration"
+require "open_exchange_rates/cache"
 require "open_exchange_rates/parser"
 require "open_exchange_rates/response"
 require "open_exchange_rates/rates"
@@ -22,4 +23,5 @@ end
 # Default configuration
 OpenExchangeRates.configure do |config|
   config.app_id = ENV['OPEN_EXCHANGE_RATES_APP_ID']
+  config.cache.type = :null
 end

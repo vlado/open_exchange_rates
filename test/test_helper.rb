@@ -1,7 +1,7 @@
 require "rubygems"
 require "test/unit"
 require "rr"
-require 'dotenv'
+require "dotenv"
 require "open_exchange_rates"
 
 # Pick up ENV variables from .env file if exists

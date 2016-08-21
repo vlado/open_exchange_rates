@@ -39,6 +39,16 @@ class TestOpenExchangeRates < Test::Unit::TestCase
     end
   end
 
+  def test_default_cache_is_null
+    fx = OpenExchangeRates::Rates.new
+    assert_equal OpenExchangeRates::Cache::NullCache, fx.cache.class
+  end
+
+  def test_cache_type_configuration
+    fx = OpenExchangeRates::Rates.new(cache: { type: :memory })
+    assert_equal OpenExchangeRates::Cache::MemoryCache, fx.cache.class
+  end
+
   def test_exchange_rate
     fx = OpenExchangeRates::Rates.new
     stub(fx).parse_latest { OpenExchangeRates::Parser.new.parse(open_asset("latest.json")) }
@@ -222,6 +232,29 @@ class TestOpenExchangeRates < Test::Unit::TestCase
     assert_raise(OpenExchangeRates::Rates::RateNotFoundError) do
       fx.exchange_rate(:from => "USD", :to => "???", :on => "2012-05-10")
     end
+  end
+
+  def test_exchange_rate_set_not_cached
+    cache = OpenExchangeRates::Cache::MemoryCache.new
+    stub(cache).get { nil }
+    stub(cache).set { open_asset('2012-05-10.json') }
+
+    fx = OpenExchangeRates::Rates.new(cache: { type: :memory })
+    fx.cache = cache
+
+    fx.parse_on("2012-05-10")
+    assert_received(cache) { |o| o.set('open-exchange-rates:2012-05-10', anything) }
+  end
+
+  def test_exchange_rate_get_cached
+    cache = OpenExchangeRates::Cache::MemoryCache.new
+    stub(cache).get('open-exchange-rates:2012-05-10') { open_asset("2012-05-10.json") }
+    dont_allow(cache) { |o| o.set }
+
+    fx = OpenExchangeRates::Rates.new
+    fx.cache = cache
+
+    fx.parse_on("2012-05-10")
   end
 
 private
