@@ -91,7 +91,13 @@ module OpenExchangeRates
 
     def parse_latest
       @latest_parser ||= OpenExchangeRates::Parser.new
-      @latest_parser.parse(open("#{OpenExchangeRates::LATEST_URL}?app_id=#{@app_id}"))
+      if Object.const_defined?('Rails') && Rails.respond_to?(:cache)
+        Rails.cache.fetch("open_exchange_rates", expires_in: 1.hour) do
+          @latest_parser.parse(open("#{OpenExchangeRates::LATEST_URL}?app_id=#{@app_id}"))
+        end
+      else
+        @latest_parser.parse(open("#{OpenExchangeRates::LATEST_URL}?app_id=#{@app_id}"))
+      end
     end
 
     def parse_on(date_string)
