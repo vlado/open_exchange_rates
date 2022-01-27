@@ -102,7 +102,7 @@ module OpenExchangeRates
 
     def parse_on(date_string)
       @on_parser = OpenExchangeRates::Parser.new
-      @on_parser.parse(open("#{OpenExchangeRates::BASE_URL}/historical/#{date_string}.json?app_id=#{@app_id}"))
+      @on_parser.parse(URI.open("#{OpenExchangeRates::BASE_URL}/historical/#{date_string}.json?app_id=#{@app_id}"))
     end
 
   end
