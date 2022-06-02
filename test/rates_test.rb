@@ -1,5 +1,6 @@
 require "test_helper"
 require 'complex'
+require 'json'
 
 class TestOpenExchangeRates < Minitest::Test
   def test_app_id_is_required
@@ -36,7 +37,7 @@ class TestOpenExchangeRates < Minitest::Test
 
   def test_exchange_rate
     fx = OpenExchangeRates::Rates.new
-    fx.stub(:parse_latest, OpenExchangeRates::Parser.new.parse(open_asset("latest.json"))) do
+    fx.stub(:parse_latest, parse_asset("latest.json")) do
       # 1 USD = 6.0995 HRK
       # 1 USD = 1.026057 AUD
       assert_equal 1, fx.exchange_rate(:from => "USD", :to => "USD")
@@ -59,7 +60,7 @@ class TestOpenExchangeRates < Minitest::Test
 
   def test_exchange_rate_on_specific_date
     fx = OpenExchangeRates::Rates.new
-    fx.stub(:parse_on, OpenExchangeRates::Parser.new.parse(open_asset("2012-05-10.json"))) do
+    fx.stub(:parse_on, parse_asset("2012-05-10.json")) do
       # 1 USD = 5.80025 HRK
       # 1 USD = 0.99458 AUD
       assert_equal 1, fx.exchange_rate(:from => "USD", :to => "USD", :on => "2012-05-10")
@@ -79,7 +80,7 @@ class TestOpenExchangeRates < Minitest::Test
 
   def test_exchange_rate_on_specific_date_specified_by_date_class
     fx = OpenExchangeRates::Rates.new
-    fx.stub(:parse_on, OpenExchangeRates::Parser.new.parse(open_asset("2012-05-10.json"))) do
+    fx.stub(:parse_on, parse_asset("2012-05-10.json")) do
       assert_equal 1, fx.exchange_rate(:from => "USD", :to => "USD", :on => Date.new(2012,05,10))
     end
   end
@@ -97,7 +98,7 @@ class TestOpenExchangeRates < Minitest::Test
 
   def test_convert
     fx = OpenExchangeRates::Rates.new
-    fx.stub(:parse_latest, OpenExchangeRates::Parser.new.parse(open_asset("latest.json"))) do
+    fx.stub(:parse_latest, parse_asset("latest.json")) do
       # 1 USD = 6.0995 HRK
       # 1 USD = 1.026057 AUD
       assert_equal 609.95, fx.convert(100, :from => "USD", :to => "HRK")
@@ -110,7 +111,7 @@ class TestOpenExchangeRates < Minitest::Test
 
   def test_convert_on_specific_date
     fx = OpenExchangeRates::Rates.new
-    fx.stub(:parse_on, OpenExchangeRates::Parser.new.parse(open_asset("2012-05-10.json"))) do
+    fx.stub(:parse_on, parse_asset("2012-05-10.json")) do
       # 1 USD = 5.80025 HRK
       # 1 USD = 0.99458 AUD
       assert_equal 580.03, fx.convert(100, :from => "USD", :to => "HRK", :on => "2012-10-05")
@@ -123,7 +124,7 @@ class TestOpenExchangeRates < Minitest::Test
 
   def test_convert_if_from_option_is_missing
     fx = OpenExchangeRates::Rates.new
-    fx.stub(:parse_latest, OpenExchangeRates::Parser.new.parse(open_asset("latest.json"))) do
+    fx.stub(:parse_latest, parse_asset("latest.json")) do
       # from defaults to base currency (USD)
       # 1 USD = 6.0995 HRK
       # 1 USD = 1.026057 AUD
@@ -134,7 +135,7 @@ class TestOpenExchangeRates < Minitest::Test
 
   def test_convert_if_to_option_is_missing
     fx = OpenExchangeRates::Rates.new
-    fx.stub(:parse_latest, OpenExchangeRates::Parser.new.parse(open_asset("latest.json"))) do
+    fx.stub(:parse_latest, parse_asset("latest.json")) do
       # to defaults to base currency (USD)
       # 1 USD = 6.0995 HRK
       # 1 USD = 1.026057 AUD
@@ -151,7 +152,7 @@ class TestOpenExchangeRates < Minitest::Test
     assert_equal "USD", latest_rates.base
     assert latest_rates.rates.is_a?(Hash)
 
-    fx.stub(:parse_latest, OpenExchangeRates::Parser.new.parse(open_asset("latest.json"))) do
+    fx.stub(:parse_latest, parse_asset("latest.json")) do
       # latest results are cached
       cached_rates = fx.latest
       assert_equal latest_rates.rates["USD"], cached_rates.rates["USD"]
@@ -209,7 +210,8 @@ private
     File.join(File.dirname(__FILE__), "assets")
   end
 
-  def open_asset(filename)
-    File.open("#{assets_root}/#{filename}")
+  def parse_asset(filename)
+    json = File.open("#{assets_root}/#{filename}").read
+    JSON.parse(json)
   end
 end
