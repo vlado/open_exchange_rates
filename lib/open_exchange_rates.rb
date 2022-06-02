@@ -1,7 +1,6 @@
 require "rubygems"
 require "open_exchange_rates/version"
 require "open_exchange_rates/configuration"
-require "open_exchange_rates/parser"
 require "open_exchange_rates/response"
 require "open_exchange_rates/rates"
 
